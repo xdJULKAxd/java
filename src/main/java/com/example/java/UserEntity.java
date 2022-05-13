@@ -1,25 +1,28 @@
 package com.example.java;
 
 public class UserEntity {
-    private int id;
+    private String id;
     private String name;
-    private int age;
+    private String email;
 
-    public UserEntity(int id, String name, int age) {
-        this.id = id;
+    public UserEntity( String name, String email) {
         this.name = name;
-        this.age = age;
+        this.email = email;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
+
+    public void setId(String id) { this.id = id; }
 
     public String getName() {
         return name;
     }
 
-    public int getAge() {
-        return age;
+    public String getEmail() {
+        return email;
     }
+    public void  setName(String name) {this.name =name;}
+    public void  setEmail(String email) {this.email =email;}
 }
