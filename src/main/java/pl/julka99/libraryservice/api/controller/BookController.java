@@ -6,41 +6,41 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.julka99.libraryservice.api.json.BookCreateJson;
 import pl.julka99.libraryservice.api.json.BookJson;
+import pl.julka99.libraryservice.service.BookService;
 
 import java.util.List;
 
 @RestController()
-@RequestMapping(value = "",produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
 public class BookController {
+    private final BookService bookService;
+
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
+
     @PostMapping("/books")
     public ResponseEntity<BookJson> createBook(@RequestBody BookCreateJson bookCreateJson) {
-         String author=bookCreateJson.getAuthor();
-        System.out.println(author);
+        BookJson bookJson = bookService.createBook(bookCreateJson);
 
-        String title=bookCreateJson.getTitle();
-        System.out.println(title);
-
-        String description=bookCreateJson.getDescription();
-        System.out.println(description);
-
-
-         BookJson book = new BookJson(1, title, author, description);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(book);
+                .body(bookJson);
 
     }
+
     @DeleteMapping("/books/{id}")
-    public ResponseEntity<Void> deleteBook(@PathVariable("id") Integer id){
+    public ResponseEntity<Void> deleteBook(@PathVariable("id") Integer id) {
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .build();
     }
+
     @GetMapping("/books")
-    public ResponseEntity<List<BookJson>> getBooks(){
-        BookJson book = new BookJson(1, "title"," author"," description");
-        BookJson book2 = new BookJson(2, "title2"," author2"," description2");
+    public ResponseEntity<List<BookJson>> getBooks() {
+        BookJson book = new BookJson(1, "title", " author", " description");
+        BookJson book2 = new BookJson(2, "title2", " author2", " description2");
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(List.of(book,book2));
+                .body(List.of(book, book2));
     }
 
 }

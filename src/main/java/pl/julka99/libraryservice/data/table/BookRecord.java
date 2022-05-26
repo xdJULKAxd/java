@@ -6,6 +6,8 @@ import javax.persistence.*;
 @Entity()
 
 public class BookRecord {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -16,4 +18,31 @@ public class BookRecord {
     private String author;
     @Column(name = "description")
     private String description;
+
+    public BookRecord (Integer id,String title, String author,String description){
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.description = description;
+
+    }
+
+    public BookRecord() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }
