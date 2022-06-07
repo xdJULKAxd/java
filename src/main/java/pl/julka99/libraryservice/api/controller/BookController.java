@@ -30,17 +30,17 @@ public class BookController {
 
     @DeleteMapping("/books/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable("id") Integer id) {
+        bookService.deleteBook(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .build();
     }
 
     @GetMapping("/books")
     public ResponseEntity<List<BookJson>> getBooks() {
-        BookJson book = new BookJson(1, "title", " author", " description");
-        BookJson book2 = new BookJson(2, "title2", " author2", " description2");
-
+       List<BookJson> bookJsons = bookService.getBooks();
         return ResponseEntity.status(HttpStatus.OK)
-                .body(List.of(book, book2));
+                .body(bookJsons);
     }
+
 
 }
