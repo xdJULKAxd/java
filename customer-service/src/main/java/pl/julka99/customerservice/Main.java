@@ -1,4 +1,4 @@
-package pl.julka99.libraryservice;
+package pl.julka99.customerservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
