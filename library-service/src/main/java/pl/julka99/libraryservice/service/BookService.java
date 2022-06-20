@@ -3,18 +3,22 @@ package pl.julka99.libraryservice.service;
 import org.springframework.stereotype.Service;
 import pl.julka99.libraryservice.api.json.BookCreateJson;
 import pl.julka99.libraryservice.api.json.BookJson;
+import pl.julka99.libraryservice.data.repository.BookCustomerRepository;
 import pl.julka99.libraryservice.data.repository.BookRepository;
 import pl.julka99.libraryservice.data.table.BookRecord;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class BookService {
     private final BookRepository bookRepository;
+    private final BookCustomerRepository bookCustomerRepository;
 
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, BookCustomerRepository bookCustomerRepository) {
         this.bookRepository = bookRepository;
+        this.bookCustomerRepository = bookCustomerRepository;
     }
 
     public BookJson createBook(BookCreateJson bookCreateJson) {
@@ -33,15 +37,37 @@ public class BookService {
             bookRepository.deleteById(id);
         }
     }
-    public List<BookJson> getBooks(){
+
+    public List<BookJson> getBooks() {
         List<BookRecord> books = bookRepository.findAll();
 
         List<BookJson> bookJsons = new ArrayList<>();
 
         for (BookRecord book : books) {
-            BookJson bookJson = new BookJson(book.getId(),book.getTitle(),
-                    book.getAuthor(),book.getDescription());
+            BookJson bookJson = new BookJson(book.getId(), book.getTitle(),
+                    book.getAuthor(), book.getDescription());
             bookJsons.add(bookJson);
+
+        }
+        return bookJsons;
+    }
+
+    public List<BookJson> getAvailableBooks(String from, String to) {
+        Date fromDate = DateHelper.convertToDate(from);
+        Date toDate = DateHelper.convertToDate(to);
+        List<BookRecord> books = bookRepository.findAll();
+
+        List<BookJson> bookJsons = new ArrayList<>();
+
+        for (BookRecord book : books) {
+
+            if (!bookCustomerRepository.existsByBookIdAndFromLessThanEqualAndToGreaterThanEqual(book.getId(),
+                    toDate, fromDate)) {
+                BookJson bookJson = new BookJson(book.getId(), book.getTitle(),
+                        book.getAuthor(), book.getDescription());
+                bookJsons.add(bookJson);
+
+            }
 
         }
         return bookJsons;

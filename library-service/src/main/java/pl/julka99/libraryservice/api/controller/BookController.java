@@ -35,12 +35,19 @@ public class BookController {
                 .build();
     }
 
-    @GetMapping("/books")
-    public ResponseEntity<List<BookJson>> getBooks() {
-       List<BookJson> bookJsons = bookService.getBooks();
+    @GetMapping("/books/all")
+    public ResponseEntity<List<BookJson>> getAllBooks() {
+        List<BookJson> bookJsons = bookService.getBooks();
         return ResponseEntity.status(HttpStatus.OK)
                 .body(bookJsons);
     }
 
+    @GetMapping("/books/available")
+    public ResponseEntity<List<BookJson>> getAllAvailableBooks(@RequestParam("from") String from,
+                                                               @RequestParam("to") String to) {
+        List<BookJson> bookJsons = bookService.getAvailableBooks(from,to);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(bookJsons);
+    }
 
 }
