@@ -10,16 +10,25 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.julka99.libraryservice.api.json.BookCreateJson;
 import pl.julka99.libraryservice.api.json.BookJson;
 import pl.julka99.libraryservice.api.json.BookRentJson;
+import pl.julka99.libraryservice.service.BookService;
 
 @RestController()
 @RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-public class BookRentController {
+public class BookRentController
+{
+    private final BookService bookService;
+    public BookRentController(BookService bookService){
+        this.bookService = bookService;
+    }
     @PostMapping("/book/rent")
-    public ResponseEntity<Void> rentBook(@RequestBody BookRentJson bookRentJson) {
-        //BookJson bookJson = bookService.createBook(bookCreateJson);
+    public ResponseEntity<String> rentBook(@RequestBody BookRentJson bookRentJson) {
 
-        //return ResponseEntity.status(HttpStatus.CREATED)
-                //.body(bookJson);
+        String msg = bookService.rentBook(bookRentJson,1);
+
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(msg);
 
     }
+
 }

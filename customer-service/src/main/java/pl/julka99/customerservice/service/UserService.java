@@ -38,5 +38,17 @@ public class UserService {
                     userRecord.getEmail(), userRecord.getPassword());
         }
     }
+    public UserJson getById( Integer id ){
+        UserRecord userRecord = userRepository.getById(id);
+        if(userRecord == null){
+            return null;
+
+        }else {
+            return new UserJson(userRecord.getId(),userRecord.getName(),
+                    userRecord.getEmail(), userRecord.getPassword());
+        }
+
+
+    }
 
 }

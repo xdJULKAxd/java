@@ -5,4 +5,5 @@ import pl.julka99.customerservice.data.table.UserRecord;
 
 public interface UserRepository extends JpaRepository<UserRecord,Integer> {
     UserRecord getByEmail(String email);
+    UserRecord getById(Integer id);
 }

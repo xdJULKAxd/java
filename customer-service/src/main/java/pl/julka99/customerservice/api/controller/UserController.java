@@ -6,9 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.julka99.customerservice.api.json.UserCreateJson;
 import pl.julka99.customerservice.api.json.UserJson;
+import pl.julka99.customerservice.data.table.UserRecord;
 import pl.julka99.customerservice.service.UserService;
 
-@RestController("/internal/users")
+@RestController("/users")
 @RequestMapping
 public class UserController {
     private final UserService userService;
@@ -22,14 +23,25 @@ public class UserController {
                 .build();
 
     }
-
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") Integer id) {
         userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .build();
 
     }
+    @GetMapping("/by-email")
     public ResponseEntity<UserJson> getUserByEmail(@RequestParam("email") String email){
+        UserJson userJson= userService.getByEmail(email);
+        return  ResponseEntity.status(HttpStatus.OK)
+        .body(userJson);
+
+    }
+    @GetMapping("/by-id")
+    public ResponseEntity<UserJson> getUserId(@RequestParam("id")Integer id){
+        UserJson userJson =userService.getById(id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userJson);
 
     }
 }

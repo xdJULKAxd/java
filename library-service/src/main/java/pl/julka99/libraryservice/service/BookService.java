@@ -3,8 +3,10 @@ package pl.julka99.libraryservice.service;
 import org.springframework.stereotype.Service;
 import pl.julka99.libraryservice.api.json.BookCreateJson;
 import pl.julka99.libraryservice.api.json.BookJson;
+import pl.julka99.libraryservice.api.json.BookRentJson;
 import pl.julka99.libraryservice.data.repository.BookCustomerRepository;
 import pl.julka99.libraryservice.data.repository.BookRepository;
+import pl.julka99.libraryservice.data.table.BookCustomerRecord;
 import pl.julka99.libraryservice.data.table.BookRecord;
 
 import java.util.ArrayList;
@@ -67,9 +69,27 @@ public class BookService {
                         book.getAuthor(), book.getDescription());
                 bookJsons.add(bookJson);
 
+
             }
 
         }
         return bookJsons;
+    }
+    public String rentBook(BookRentJson bookRentJson,Integer customerId){
+        if(!bookRepository.existsById(bookRentJson.getId())){
+            return "książka do wypozyczenia nie istnieje";
+        }
+        boolean alreadyExistRent = bookCustomerRepository.existsByBookIdAndFromLessThanEqualAndToGreaterThanEqual(bookRentJson.getId(),
+                bookRentJson.getTo(),bookRentJson.getFrom());
+        if(!alreadyExistRent ){
+            BookCustomerRecord bookCustomerRecord = new BookCustomerRecord( null,customerId,
+                    bookRentJson.getId(), bookRentJson.getFrom(), bookRentJson.getTo());
+            bookCustomerRepository.save(bookCustomerRecord);
+            return " książka wypożyczona";
+        }
+        else {
+            return "istnieje wypożyczenei w tym czasie- wypożyczenie nie zrealizowane!";
+        }
+
     }
 }
