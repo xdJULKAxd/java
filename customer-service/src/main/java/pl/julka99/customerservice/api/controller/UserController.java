@@ -9,14 +9,14 @@ import pl.julka99.customerservice.api.json.UserJson;
 import pl.julka99.customerservice.data.table.UserRecord;
 import pl.julka99.customerservice.service.UserService;
 
-@RestController("/users")
-@RequestMapping
+@RestController
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
     public UserController(UserService userService) {
         this.userService = userService;
     }
-    @PostMapping
+    @PostMapping("/registration")
     public ResponseEntity<Void> createUser(@RequestBody UserCreateJson userCreateJson) {
         userService.createUser(userCreateJson);
         return ResponseEntity.status(HttpStatus.CREATED)

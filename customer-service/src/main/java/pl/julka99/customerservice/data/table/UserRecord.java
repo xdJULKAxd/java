@@ -16,12 +16,17 @@ public class UserRecord {
     @Column(name = "password")
     private String password;
 
+    @Column(name="admin")
+    private boolean admin;
 
-    public UserRecord(Integer id, String name, String email, String password) {
+
+
+    public UserRecord(Integer id, String name, String email, String password,Boolean admin) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.admin = admin;
 
     }
 
@@ -38,6 +43,9 @@ public class UserRecord {
 
     public String getEmail() {
         return email;
+    }
+    public Boolean getAdmin(){
+        return admin;
     }
 
     public String getPassword() {

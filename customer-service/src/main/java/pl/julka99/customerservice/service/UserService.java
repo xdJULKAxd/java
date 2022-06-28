@@ -16,7 +16,7 @@ public class UserService {
 
     public void createUser(UserCreateJson userCreateJson) {
         UserRecord userRecord = new UserRecord(null, userCreateJson.getName(),
-                userCreateJson.getEmail(), userCreateJson.getPassword());
+                userCreateJson.getEmail(), userCreateJson.getPassword(),false);
         userRepository.save(userRecord);
     }
 
@@ -35,7 +35,7 @@ public class UserService {
 
         }else {
             return new UserJson(userRecord.getId(),userRecord.getName(),
-                    userRecord.getEmail(), userRecord.getPassword());
+                    userRecord.getEmail(), userRecord.getPassword(),userRecord.getAdmin());
         }
     }
     public UserJson getById( Integer id ){
@@ -45,7 +45,7 @@ public class UserService {
 
         }else {
             return new UserJson(userRecord.getId(),userRecord.getName(),
-                    userRecord.getEmail(), userRecord.getPassword());
+                    userRecord.getEmail(), userRecord.getPassword(),userRecord.getAdmin());
         }
 
 

@@ -5,12 +5,14 @@ public class UserJson {
     private String name;
     private String email;
     private String password;
+    private Boolean admin;
 
-    public UserJson(Integer id, String name, String email, String password) {
+    public UserJson(Integer id, String name, String email, String password,Boolean admin) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.admin = admin;
     }
 
     public UserJson() {
@@ -31,6 +33,9 @@ public class UserJson {
     public String getPassword() {
         return password;
     }
+    public Boolean getAdmin(){
+        return admin;
+    }
 
     public void setId(Integer id) {
         this.id = id;
@@ -46,5 +51,8 @@ public class UserJson {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    public  void setAdmin(Boolean admin){
+        this.admin = admin;
     }
 }
