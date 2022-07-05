@@ -2,14 +2,19 @@ package pl.julka99.libraryservice.api.json;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 public class BookRentJson {
 
-    private  Integer id;
+    @NotNull(message = "Id cant be empty")
+    private Integer id;
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @NotEmpty(message = "From cant be empty, format: yyyy-MM-dd")
     private Date from;
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @NotEmpty(message = "To cant be empty, format: yyyy-MM-dd")
     private Date to;
 
     public BookRentJson() {

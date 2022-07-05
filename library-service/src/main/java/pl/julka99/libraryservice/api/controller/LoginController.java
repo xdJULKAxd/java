@@ -24,9 +24,10 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestHeader("email") String email,
-                                      @RequestHeader("password") String password,
-                                      HttpServletRequest request) {
-        UserJson userJson = customerServiceClient.getUserByEmail(email);
+                                        @RequestHeader("password") String password,
+                                        HttpServletRequest request) {
+        UserJson userJson = customerServiceClient.getUserByEmail(email)
+                ;
         if (userJson == null || !userJson.getPassword().equals(password)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("nie poprawne dane logowania");
@@ -38,24 +39,13 @@ public class LoginController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body("zalogowano");
     }
+
     @DeleteMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletRequest request) throws ServletException {
-       if(request.getSession() != null ){
-           request.getSession().invalidate();
-       }
+        if(request.getSession() != null ){
+            request.getSession().invalidate();
+        }
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .build();
     }
-    @GetMapping("/test")
-    public ResponseEntity<Void> test( HttpServletRequest request){
-        if(request.getSession() == null || request.getSession().getAttribute("userId")== null){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .build();
-        }
-        System.out.println(request.getSession().getAttribute("userId"));
-        System.out.println(request.getSession().getAttribute("admin"));
-         return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                .build();
-    }
-
 }
