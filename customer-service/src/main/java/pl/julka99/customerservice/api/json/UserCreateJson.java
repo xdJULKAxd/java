@@ -1,9 +1,14 @@
 package pl.julka99.customerservice.api.json;
 
 
+import javax.validation.constraints.NotEmpty;
+
 public class UserCreateJson {
+    @NotEmpty(message = "Name cant be empty")
     private String name;
+    @NotEmpty(message = "Email cant be empty")
     private String email;
+    @NotEmpty(message = "Password cant be empty")
     private String password;
 
     public UserCreateJson() {
@@ -41,4 +46,3 @@ public class UserCreateJson {
 
 
 }
-

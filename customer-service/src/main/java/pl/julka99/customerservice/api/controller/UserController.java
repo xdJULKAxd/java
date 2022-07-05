@@ -3,12 +3,15 @@ package pl.julka99.customerservice.api.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.julka99.customerservice.api.json.UserCreateJson;
 import pl.julka99.customerservice.api.json.UserJson;
-import pl.julka99.customerservice.data.table.UserRecord;
 import pl.julka99.customerservice.service.UserService;
 
+import javax.validation.Valid;
+
+@Validated
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -17,7 +20,7 @@ public class UserController {
         this.userService = userService;
     }
     @PostMapping("/registration")
-    public ResponseEntity<Void> createUser(@RequestBody UserCreateJson userCreateJson) {
+    public ResponseEntity<Void> createUser(@RequestBody @Valid UserCreateJson userCreateJson) {
         userService.createUser(userCreateJson);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .build();
@@ -25,21 +28,24 @@ public class UserController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") Integer id) {
-        userService.deleteUser(id);
+        userService.deleteUser(id)
+        ;
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .build();
 
     }
     @GetMapping("/by-email")
     public ResponseEntity<UserJson> getUserByEmail(@RequestParam("email") String email){
-        UserJson userJson= userService.getByEmail(email);
+        UserJson userJson= userService.getByEmail(email)
+                ;
         return  ResponseEntity.status(HttpStatus.OK)
-        .body(userJson);
+                .body(userJson);
 
     }
     @GetMapping("/by-id")
     public ResponseEntity<UserJson> getUserId(@RequestParam("id")Integer id){
-        UserJson userJson =userService.getById(id);
+        UserJson userJson =userService.getById(id)
+                ;
         return ResponseEntity.status(HttpStatus.OK)
                 .body(userJson);
 
