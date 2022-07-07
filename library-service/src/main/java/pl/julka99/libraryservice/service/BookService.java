@@ -1,9 +1,7 @@
 package pl.julka99.libraryservice.service;
 
 import org.springframework.stereotype.Service;
-import pl.julka99.libraryservice.api.json.BookCreateJson;
-import pl.julka99.libraryservice.api.json.BookJson;
-import pl.julka99.libraryservice.api.json.BookRentJson;
+import pl.julka99.libraryservice.api.json.*;
 import pl.julka99.libraryservice.data.repository.BookCustomerRepository;
 import pl.julka99.libraryservice.data.repository.BookRepository;
 import pl.julka99.libraryservice.data.table.BookCustomerRecord;
@@ -34,9 +32,11 @@ public class BookService {
     }
 
     public void deleteBook(Integer id) {
-        boolean existBook = bookRepository.existsById(id);
+        boolean existBook = bookRepository.existsById(id)
+                ;
         if (existBook) {
-            bookRepository.deleteById(id);
+            bookRepository.deleteById(id)
+            ;
         }
     }
 
@@ -75,21 +75,38 @@ public class BookService {
         }
         return bookJsons;
     }
-    public String rentBook(BookRentJson bookRentJson,Integer customerId){
-        if(!bookRepository.existsById(bookRentJson.getId())){
+
+    public String rentBook(BookRentJson bookRentJson, Integer customerId) {
+        if (!bookRepository.existsById(bookRentJson.getId())) {
             return "książka do wypozyczenia nie istnieje";
         }
         boolean alreadyExistRent = bookCustomerRepository.existsByBookIdAndFromLessThanEqualAndToGreaterThanEqual(bookRentJson.getId(),
-                bookRentJson.getTo(),bookRentJson.getFrom());
-        if(!alreadyExistRent ){
-            BookCustomerRecord bookCustomerRecord = new BookCustomerRecord( null,customerId,
+                bookRentJson.getTo(), bookRentJson.getFrom());
+        if (!alreadyExistRent) {
+            BookCustomerRecord bookCustomerRecord = new BookCustomerRecord(null, customerId,
                     bookRentJson.getId(), bookRentJson.getFrom(), bookRentJson.getTo());
             bookCustomerRepository.save(bookCustomerRecord);
             return " książka wypożyczona";
-        }
-        else {
+        } else {
             return "istnieje wypożyczenei w tym czasie- wypożyczenie nie zrealizowane!";
         }
 
+    }
+
+    public BookRentStatusJson getBookRentStatusJson(Integer userId) {
+        List<BookCustomerRecord> allByCustomerId = bookCustomerRepository.getAllByCustomerId(userId);
+        List<BookWithRentJson> rents = new ArrayList<>();
+        for (BookCustomerRecord bookCustomerRecord : allByCustomerId) {
+            BookRecord bookRecord = bookRepository.findById(bookCustomerRecord.getBookId())
+                    .orElse(null);
+            if (bookRecord == null) {
+                continue;
+            }
+
+            rents.add(new BookWithRentJson(bookCustomerRecord.getFrom(), bookCustomerRecord.getTo(),
+                    new BookJson(bookRecord.getId(), bookRecord.getTitle(), bookRecord.getAuthor(),
+                            bookRecord.getDescription())));
+        }
+        return new BookRentStatusJson(rents);
     }
 }
