@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8081
 spring:
   jpa:
     database: postgresql
@@ -10,7 +10,7 @@ spring:
 #        jdbc:
 #          time_zone: UTC
   datasource:
-    url: jdbc:postgresql://localhost:5432/customers
+    url: jdbc:postgresql://localhost:5432/library
     username: postgres
     password: user123
     driver-class-name: org.postgresql.Driver
